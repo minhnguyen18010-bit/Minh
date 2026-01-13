@@ -1,5 +1,5 @@
 import React from 'react';
-import { Trophy, Code, Award, Heart } from 'lucide-react';
+import { Trophy, Code, Award, CircleDollarSign } from 'lucide-react';
 
 const stats = [
   {
@@ -24,11 +24,11 @@ const stats = [
     color: "text-purple-400"
   },
   {
-    label: "Activities",
-    value: "15+",
-    sub: "Charity & Events",
-    icon: Heart,
-    color: "text-red-400"
+    label: "Total Awards",
+    value: "50M+ VND",
+    sub: "Scholarships & Prizes",
+    icon: CircleDollarSign,
+    color: "text-green-400"
   }
 ];
 

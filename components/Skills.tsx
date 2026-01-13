@@ -56,7 +56,7 @@ const Skills: React.FC = () => {
                  <div>
                     <h4 className="text-white font-bold mb-3">Athletics</h4>
                     <div className="flex flex-wrap gap-3">
-                      <HobbyTag name="Badminton (Đánh cầu)" />
+                      <HobbyTag name="Badminton (Cầu lông)" />
                       <HobbyTag name="Endurance" />
                     </div>
                  </div>
@@ -64,10 +64,10 @@ const Skills: React.FC = () => {
                  <div className="w-full h-px bg-slate-700/50"></div>
 
                  <div>
-                    <h4 className="text-white font-bold mb-3">Arts</h4>
+                    <h4 className="text-white font-bold mb-3">Arts & Music</h4>
                     <div className="flex flex-wrap gap-3">
+                      <HobbyTag name="Piano Performance" />
                       <HobbyTag name="Dancing" />
-                      <HobbyTag name="Stage Performance" />
                     </div>
                  </div>
                </div>

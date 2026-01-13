@@ -29,16 +29,16 @@ const Hero: React.FC = () => {
             <br />
             Sinh nhật: 25/04/2012. 
             <br />
-            Học sinh trường <strong>Wellspring Saigon</strong> với 8 năm gắn bó.
-            Đam mê công nghệ, Robotics và nghệ thuật.
+            Học sinh lớp <strong>Toán & Khoa học Tự nhiên Nâng cao</strong> tại trường <strong>Wellspring Saigon</strong> (8 năm).
+            Đam mê công nghệ, Robotics, Piano và Cầu lông.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 pt-4">
             <a 
-              href="#"
+              href="#achievements"
               className="px-8 py-3 bg-blue-600 hover:bg-blue-500 text-white rounded-lg font-medium transition-all shadow-lg shadow-blue-500/25 flex items-center justify-center gap-2 group"
             >
-              Xem Dự Án
+              Xem Thành Tựu
               <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </a>
             <a 
@@ -63,13 +63,13 @@ const Hero: React.FC = () => {
               <div className="space-y-2 text-slate-300">
                 <p><span className="text-purple-400">const</span> <span className="text-blue-400">student</span> = <span className="text-yellow-300">{`{`}</span></p>
                 <p className="pl-4"><span className="text-sky-300">name</span>: <span className="text-orange-300">"Nguyễn Thiên Minh"</span>,</p>
-                <p className="pl-4"><span className="text-sky-300">birthday</span>: <span className="text-orange-300">"25/04/2012"</span>,</p>
-                <p className="pl-4"><span className="text-sky-300">age</span>: <span className="text-red-400">14</span>,</p>
+                <p className="pl-4"><span className="text-sky-300">class</span>: <span className="text-orange-300">"Adv Math & Science"</span>,</p>
                 <p className="pl-4"><span className="text-sky-300">school</span>: <span className="text-orange-300">"Wellspring Saigon (8 yrs)"</span>,</p>
-                <p className="pl-4"><span className="text-sky-300">achievements</span>: <span className="text-yellow-300">[</span></p>
-                <p className="pl-8"><span className="text-green-400">"Robotacon Silver (3x)"</span>,</p>
-                <p className="pl-8"><span className="text-green-400">"Int'l Dance Gold"</span>,</p>
+                <p className="pl-4"><span className="text-sky-300">talents</span>: <span className="text-yellow-300">[</span></p>
+                <p className="pl-8"><span className="text-green-400">"Coding & Robotics"</span>,</p>
+                <p className="pl-8"><span className="text-green-400">"Piano Performance"</span>,</p>
                 <p className="pl-4"><span className="text-yellow-300">]</span>,</p>
+                <p className="pl-4"><span className="text-sky-300">totalPrizes</span>: <span className="text-red-400">"50.000.000 VND+"</span>,</p>
                 <p><span className="text-yellow-300">{`}`}</span>;</p>
                 <div className="mt-4 flex items-center gap-2 text-slate-500">
                   <Terminal size={14} />
