@@ -25,8 +25,12 @@ const Hero: React.FC = () => {
           </h1>
           
           <p className="text-slate-400 text-lg max-w-lg leading-relaxed">
-            Học sinh xuất sắc với niềm đam mê công nghệ và nghệ thuật.
-            Kinh nghiệm 5 năm Coding, 3 năm chinh chiến Robotacon và huy chương Vàng nghệ thuật quốc tế.
+            Xin chào, mình là <strong className="text-white">Nguyễn Thiên Minh</strong> (14 tuổi).
+            <br />
+            Sinh nhật: 25/04/2012. 
+            <br />
+            Học sinh trường <strong>Wellspring Saigon</strong> với 8 năm gắn bó.
+            Đam mê công nghệ, Robotics và nghệ thuật.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 pt-4">
@@ -57,14 +61,15 @@ const Hero: React.FC = () => {
                 <div className="w-3 h-3 rounded-full bg-green-500" />
               </div>
               <div className="space-y-2 text-slate-300">
-                <p><span className="text-purple-400">const</span> <span className="text-blue-400">profile</span> = <span className="text-yellow-300">{`{`}</span></p>
-                <p className="pl-4"><span className="text-sky-300">experience</span>: <span className="text-orange-300">"5 years coding"</span>,</p>
+                <p><span className="text-purple-400">const</span> <span className="text-blue-400">student</span> = <span className="text-yellow-300">{`{`}</span></p>
+                <p className="pl-4"><span className="text-sky-300">name</span>: <span className="text-orange-300">"Nguyễn Thiên Minh"</span>,</p>
+                <p className="pl-4"><span className="text-sky-300">birthday</span>: <span className="text-orange-300">"25/04/2012"</span>,</p>
+                <p className="pl-4"><span className="text-sky-300">age</span>: <span className="text-red-400">14</span>,</p>
+                <p className="pl-4"><span className="text-sky-300">school</span>: <span className="text-orange-300">"Wellspring Saigon (8 yrs)"</span>,</p>
                 <p className="pl-4"><span className="text-sky-300">achievements</span>: <span className="text-yellow-300">[</span></p>
                 <p className="pl-8"><span className="text-green-400">"Robotacon Silver (3x)"</span>,</p>
-                <p className="pl-8"><span className="text-green-400">"Malaysia Dance Gold"</span>,</p>
+                <p className="pl-8"><span className="text-green-400">"Int'l Dance Gold"</span>,</p>
                 <p className="pl-4"><span className="text-yellow-300">]</span>,</p>
-                <p className="pl-4"><span className="text-sky-300">academics</span>: <span className="text-orange-300">"Excellent Student (6 yrs)"</span>,</p>
-                <p className="pl-4"><span className="text-sky-300">hobbies</span>: <span className="text-yellow-300">[</span><span className="text-green-400">"Coding"</span>, <span className="text-green-400">"Badminton"</span><span className="text-yellow-300">]</span></p>
                 <p><span className="text-yellow-300">{`}`}</span>;</p>
                 <div className="mt-4 flex items-center gap-2 text-slate-500">
                   <Terminal size={14} />

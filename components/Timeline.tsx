@@ -60,11 +60,11 @@ const Timeline: React.FC = () => {
 
          <div className="space-y-2">
             <TimelineItem 
-              year="Present"
-              title="Excellent Student"
-              desc="Duy trì thành tích Học sinh xuất sắc trong 6 năm liền (tính đến hết lớp 7). Luôn đứng đầu trong các môn khoa học tự nhiên."
+              year="8 Years"
+              title="Wellspring Saigon Student"
+              desc="8 năm học tập tại môi trường song ngữ quốc tế Wellspring Saigon. Luôn duy trì thành tích tốt và tích cực tham gia các hoạt động ngoại khóa."
               icon={GraduationCap}
-              tags={['Math', 'Science', 'Top Tier']}
+              tags={['Wellspring', 'Bilingual', 'Excellent']}
             />
              <TimelineItem 
               year="Ongoing"
@@ -74,7 +74,7 @@ const Timeline: React.FC = () => {
               tags={['Volunteer', 'Community', 'Leadership']}
             />
             <TimelineItem 
-              year="2019-2023"
+              year="2019-2024"
               title="Coding Journey"
               desc="5 năm kinh nghiệm tự học và rèn luyện lập trình. Phát triển tư duy logic thông qua các dự án cá nhân và thi đấu."
               icon={Calendar}

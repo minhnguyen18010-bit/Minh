@@ -12,8 +12,8 @@ function App() {
       {/* Navigation */}
       <nav className="fixed top-0 w-full z-50 glass-card border-b-0 border-b-white/5 bg-opacity-80 backdrop-blur-md">
         <div className="container mx-auto px-6 h-16 flex items-center justify-between">
-          <span className="font-bold text-xl tracking-tight">
-            MY<span className="text-blue-500">PROFILE</span>_
+          <span className="font-bold text-xl tracking-tight uppercase">
+            Nguyễn <span className="text-blue-500">Thiên Minh</span>
           </span>
           <div className="hidden md:flex gap-8 text-sm font-medium text-slate-400">
             <a href="#" className="hover:text-white transition-colors">About</a>
