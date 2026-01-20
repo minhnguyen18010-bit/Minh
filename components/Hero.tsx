@@ -1,7 +1,44 @@
-import React from 'react';
-import { Download, ChevronRight, Terminal } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { Download, ChevronRight, Code, Music, Trophy, User, Camera, ImagePlus } from 'lucide-react';
 
 const Hero: React.FC = () => {
+  // State quản lý ảnh: Mặc định là null để kiểm tra local storage trước
+  const [profileImage, setProfileImage] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // 1. Khi trang web tải lên, kiểm tra xem đã có ảnh lưu trước đó chưa
+  useEffect(() => {
+    const savedImage = localStorage.getItem("my-fixed-profile-image");
+    if (savedImage) {
+      setProfileImage(savedImage); // Nếu có, dùng ảnh đó
+    } else {
+      setProfileImage(null); // Nếu chưa, để trống (sẽ hiện icon User mặc định)
+    }
+  }, []);
+
+  // 2. Hàm xử lý khi bạn chọn ảnh từ máy tính
+  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      
+      // Khi đọc xong file
+      reader.onloadend = () => {
+        const base64String = reader.result as string;
+        
+        // Cập nhật lên giao diện ngay lập tức
+        setProfileImage(base64String);
+        
+        // LƯU CỐ ĐỊNH VÀO TRÌNH DUYỆT (Local Storage)
+        // Lần sau mở lại trang web, ảnh này sẽ tự động hiện ra
+        localStorage.setItem("my-fixed-profile-image", base64String);
+      };
+      
+      // Bắt đầu đọc file ảnh
+      reader.readAsDataURL(file);
+    }
+  };
+
   return (
     <section className="relative pt-32 pb-20 overflow-hidden">
       {/* Background decoration */}
@@ -10,7 +47,7 @@ const Hero: React.FC = () => {
 
       <div className="container mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center">
         {/* Left Content */}
-        <div className="space-y-6">
+        <div className="space-y-6 z-10">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-sm font-mono">
             <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
@@ -51,31 +88,61 @@ const Hero: React.FC = () => {
           </div>
         </div>
 
-        {/* Right Content - Abstract Code Visual */}
-        <div className="relative">
-          <div className="glass-card rounded-xl p-1 border-t border-white/10 shadow-2xl transform rotate-1 hover:rotate-0 transition-transform duration-500">
-            <div className="bg-[#0f1420] rounded-lg p-6 font-mono text-sm overflow-hidden">
-              <div className="flex gap-2 mb-4">
-                <div className="w-3 h-3 rounded-full bg-red-500" />
-                <div className="w-3 h-3 rounded-full bg-yellow-500" />
-                <div className="w-3 h-3 rounded-full bg-green-500" />
+        {/* Right Content - Profile Picture */}
+        <div className="relative flex justify-center items-center">
+          <div className="relative w-64 h-64 md:w-80 md:h-80 group">
+            {/* Animated Glow Effect */}
+            <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full blur-2xl opacity-50 group-hover:opacity-75 transition-opacity duration-500 animate-pulse" />
+            
+            {/* Image Container */}
+            <div className="relative w-full h-full rounded-full overflow-hidden border-4 border-white/10 shadow-2xl bg-slate-900 flex items-center justify-center bg-slate-800">
+               
+               {/* 1. Nếu có ảnh (từ upload hoặc local storage) thì hiển thị */}
+               {profileImage ? (
+                 <img 
+                  src={profileImage} 
+                  alt="Nguyen Thien Minh"
+                  className="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110 relative z-10"
+                />
+               ) : (
+                 /* 2. Nếu chưa có ảnh, hiện Icon User và hướng dẫn */
+                 <div className="absolute inset-0 flex flex-col items-center justify-center text-slate-500 z-0">
+                    <User size={80} strokeWidth={1} />
+                    <span className="text-xs mt-2 font-mono opacity-50">No Image Set</span>
+                 </div>
+               )}
+
+              {/* Upload Button Overlay - Luôn hiện để có thể chỉnh sửa bất cứ lúc nào */}
+              <div className="absolute bottom-4 right-0 left-0 flex justify-center z-20">
+                <input 
+                  type="file" 
+                  ref={fileInputRef}
+                  onChange={handleImageUpload}
+                  className="hidden" 
+                  accept="image/*"
+                />
+                <button 
+                  onClick={() => fileInputRef.current?.click()}
+                  className="px-4 py-2 bg-slate-900/80 backdrop-blur-md border border-white/20 hover:bg-blue-600 text-white rounded-full shadow-lg transition-all hover:scale-105 flex items-center gap-2 group/btn"
+                  title="Tải ảnh lên (Lưu cố định)"
+                >
+                  {profileImage ? <Camera size={16} /> : <ImagePlus size={16} />}
+                  <span className="text-sm font-medium">
+                    {profileImage ? 'Đổi Ảnh' : 'Tải Ảnh Lên'}
+                  </span>
+                </button>
               </div>
-              <div className="space-y-2 text-slate-300">
-                <p><span className="text-purple-400">const</span> <span className="text-blue-400">student</span> = <span className="text-yellow-300">{`{`}</span></p>
-                <p className="pl-4"><span className="text-sky-300">name</span>: <span className="text-orange-300">"Nguyễn Thiên Minh"</span>,</p>
-                <p className="pl-4"><span className="text-sky-300">class</span>: <span className="text-orange-300">"Adv Math & Science"</span>,</p>
-                <p className="pl-4"><span className="text-sky-300">school</span>: <span className="text-orange-300">"Wellspring Saigon (8 yrs)"</span>,</p>
-                <p className="pl-4"><span className="text-sky-300">talents</span>: <span className="text-yellow-300">[</span></p>
-                <p className="pl-8"><span className="text-green-400">"Coding & Robotics"</span>,</p>
-                <p className="pl-8"><span className="text-green-400">"Piano Performance"</span>,</p>
-                <p className="pl-4"><span className="text-yellow-300">]</span>,</p>
-                <p className="pl-4"><span className="text-sky-300">totalPrizes</span>: <span className="text-red-400">"50.000.000 VND+"</span>,</p>
-                <p><span className="text-yellow-300">{`}`}</span>;</p>
-                <div className="mt-4 flex items-center gap-2 text-slate-500">
-                  <Terminal size={14} />
-                  <span className="animate-pulse">_cursor_active</span>
-                </div>
-              </div>
+            </div>
+
+            {/* Floating Badges */}
+            <div className="absolute -right-4 top-10 p-3 glass-card rounded-xl animate-bounce shadow-lg shadow-blue-500/20" style={{ animationDelay: '0s' }}>
+               <Code className="text-blue-400 w-6 h-6" />
+            </div>
+            <div className="absolute -left-4 bottom-20 p-3 glass-card rounded-xl animate-bounce shadow-lg shadow-purple-500/20" style={{ animationDelay: '1.5s' }}>
+               <Music className="text-purple-400 w-6 h-6" />
+            </div>
+            <div className="absolute right-10 -bottom-4 p-3 glass-card rounded-xl animate-bounce shadow-lg shadow-yellow-500/20" style={{ animationDelay: '3s' }}>
+               <Trophy className="text-yellow-400 w-6 h-6" />
             </div>
           </div>
         </div>
