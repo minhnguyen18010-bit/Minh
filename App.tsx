@@ -4,6 +4,7 @@ import Stats from './components/Stats';
 import Achievements from './components/Achievements';
 import Timeline from './components/Timeline';
 import Skills from './components/Skills';
+import TodoList from './components/TodoList';
 import Footer from './components/Footer';
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
             <a href="#achievements" className="hover:text-white transition-colors">Achievements</a>
             <a href="#education" className="hover:text-white transition-colors">Education</a>
             <a href="#skills" className="hover:text-white transition-colors">Skills</a>
+            <a href="#todo" className="hover:text-white transition-colors text-blue-400">To-Do App</a>
           </div>
           <button className="px-4 py-2 text-xs font-bold bg-white/10 hover:bg-white/20 rounded border border-white/10 transition-colors uppercase tracking-wider">
             Contact Me
@@ -33,6 +35,7 @@ function App() {
         <Achievements />
         <Timeline />
         <Skills />
+        <TodoList />
       </main>
 
       <Footer />
