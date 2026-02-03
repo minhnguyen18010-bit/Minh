@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { MessageSquare, Send, X, Bot, Loader2, Sparkles, ImagePlus, Paperclip, FileText, BrainCircuit, Type as TypeIcon } from 'lucide-react';
+import { Send, X, Bot, Loader2, Sparkles, ImagePlus, BrainCircuit } from 'lucide-react';
 import { GoogleGenAI, Type } from "@google/genai";
 import { QuizItem } from './QuizSystem';
 
@@ -14,7 +14,7 @@ const QuizAI: React.FC = () => {
   const [input, setInput] = useState('');
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [messages, setMessages] = useState<Message[]>([
-    { role: 'ai', text: 'Chào Thiên Minh! Mình đã được nâng cấp. Bạn có thể gửi ảnh đề bài hoặc yêu cầu mình tạo Quiz về bất kỳ chủ đề nào (Toán, Lý, Tiếng Anh...) để nạp thẳng vào app nhé!' }
+    { role: 'ai', text: 'Chào Thiên Minh! Mình đã sẵn sàng. Bạn có thể yêu cầu tạo Quiz (ví dụ: "Tạo 15 câu trắc nghiệm KHTN 8 bài 1") hoặc gửi ảnh đề bài để mình nạp vào app nhé!' }
   ]);
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -50,67 +50,83 @@ const QuizAI: React.FC = () => {
     try {
       const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
       
-      const contents: any[] = [];
+      const parts: any[] = [];
       if (userImage) {
-        contents.push({
+        parts.push({
           inlineData: {
             mimeType: 'image/jpeg',
             data: userImage.split(',')[1],
           },
         });
       }
-      contents.push({ text: userMessage || "Hãy phân tích ảnh này và tạo các câu hỏi Quiz phù hợp." });
+      parts.push({ text: userMessage || "Phân tích nội dung và tạo quiz phù hợp." });
 
       const response = await ai.models.generateContent({
-        model: 'gemini-3-flash-preview',
-        contents: { parts: contents },
+        model: 'gemini-3-pro-preview', // Sử dụng bản Pro để xử lý logic phức tạp/số lượng lớn
+        contents: { parts },
         config: {
           systemInstruction: `Bạn là Trợ lý Quiz thông minh của Nguyễn Thiên Minh. 
-          Nhiệm vụ:
-          1. Giải đáp kiến thức học tập.
-          2. Tạo nội dung Quiz (Flashcard, Trắc nghiệm, Đúng/Sai, Tự luận).
-          
-          KHI NGƯỜI DÙNG YÊU CẦU TẠO QUIZ (hoặc gửi ảnh đề bài):
-          Bạn PHẢI trả lời kèm theo một khối JSON hợp lệ nằm giữa dấu [QUIZ_DATA] và [/QUIZ_DATA].
-          Cấu trúc JSON là một mảng các đối tượng QuizItem:
-          {
-            "type": "flashcard" | "multipleChoice" | "trueFalse" | "essay",
-            "question": "nội dung câu hỏi",
-            "answer": "đáp án đúng",
-            "options": ["Lựa chọn A", "Lựa chọn B", "Lựa chọn C", "Lựa chọn D"] (CHỈ dùng cho multipleChoice và trueFalse),
-            "isFavorite": false
+          Nhiệm vụ: Phân tích yêu cầu và tạo danh sách câu hỏi Quiz (Flashcard, Trắc nghiệm, Đúng/Sai, Tự luận).
+          - Nếu người dùng yêu cầu số lượng câu cụ thể (ví dụ 15 câu), hãy cố gắng đáp ứng đủ.
+          - Nội dung phải chính xác theo chương trình giáo dục Việt Nam (KHTN, Toán, Lý, Hóa...).
+          - Trả về danh sách câu hỏi dưới dạng mảng JSON.`,
+          responseMimeType: "application/json",
+          responseSchema: {
+            type: Type.OBJECT,
+            properties: {
+              explanation: { 
+                type: Type.STRING, 
+                description: "Lời nhắn thân thiện bằng tiếng Việt cho người dùng về bộ Quiz vừa tạo." 
+              },
+              quizItems: {
+                type: Type.ARRAY,
+                items: {
+                  type: Type.OBJECT,
+                  properties: {
+                    type: { 
+                      type: Type.STRING, 
+                      description: "Loại câu hỏi: flashcard, multipleChoice, trueFalse, hoặc essay" 
+                    },
+                    question: { type: Type.STRING },
+                    answer: { type: Type.STRING },
+                    options: { 
+                      type: Type.ARRAY, 
+                      items: { type: Type.STRING },
+                      description: "Chỉ cung cấp cho multipleChoice (4 lựa chọn) hoặc trueFalse (True/False)"
+                    }
+                  },
+                  required: ["type", "question", "answer"]
+                }
+              }
+            },
+            required: ["explanation", "quizItems"]
           }
-          Hãy tạo khoảng 3-5 câu hỏi chất lượng dựa trên yêu cầu hoặc hình ảnh. 
-          Luôn trả lời bằng tiếng Việt thân thiện.`,
         },
       });
 
-      const aiText = response.text || "";
+      const result = JSON.parse(response.text);
       
-      // Extract Quiz Data
-      const quizMatch = aiText.match(/\[QUIZ_DATA\]([\s\S]*?)\[\/QUIZ_DATA\]/);
-      if (quizMatch) {
-        try {
-          const quizJson = JSON.parse(quizMatch[1].trim());
-          const quizItems = quizJson.map((item: any) => ({
-            ...item,
-            id: Math.random().toString(36).substr(2, 9)
-          }));
-          
-          // Dispatch custom event to QuizSystem
-          window.dispatchEvent(new CustomEvent('add-quiz-items', { detail: quizItems }));
-          
-          const cleanText = aiText.replace(/\[QUIZ_DATA\][\s\S]*?\[\/QUIZ_DATA\]/, "✅ Mình đã tạo và thêm các câu hỏi mới vào danh sách học tập của bạn rồi nhé!");
-          setMessages(prev => [...prev, { role: 'ai', text: cleanText }]);
-        } catch (e) {
-          setMessages(prev => [...prev, { role: 'ai', text: aiText }]);
-        }
+      if (result.quizItems && result.quizItems.length > 0) {
+        const formattedItems = result.quizItems.map((item: any) => ({
+          ...item,
+          id: Math.random().toString(36).substr(2, 9),
+          isFavorite: false
+        }));
+
+        // Gửi sự kiện nạp vào QuizSystem
+        window.dispatchEvent(new CustomEvent('add-quiz-items', { detail: formattedItems }));
+        
+        setMessages(prev => [...prev, { 
+          role: 'ai', 
+          text: result.explanation + `\n\n✅ Đã nạp thành công ${formattedItems.length} câu hỏi vào danh sách của bạn!` 
+        }]);
       } else {
-        setMessages(prev => [...prev, { role: 'ai', text: aiText }]);
+        setMessages(prev => [...prev, { role: 'ai', text: result.explanation || "Mình đã tìm hiểu nhưng chưa tạo được câu hỏi phù hợp. Bạn thử yêu cầu khác nhé!" }]);
       }
+
     } catch (error) {
       console.error("Quiz AI Error:", error);
-      setMessages(prev => [...prev, { role: 'ai', text: "Hệ thống AI đang bận, Minh thử lại sau nhé!" }]);
+      setMessages(prev => [...prev, { role: 'ai', text: "Hệ thống AI gặp lỗi kết nối. Minh hãy kiểm tra lại yêu cầu hoặc thử lại sau nhé!" }]);
     } finally {
       setIsLoading(false);
     }
@@ -126,10 +142,10 @@ const QuizAI: React.FC = () => {
                 <BrainCircuit size={20} className="text-white" />
               </div>
               <div>
-                <h3 className="text-white font-bold text-sm">Quiz Creator AI</h3>
+                <h3 className="text-white font-bold text-sm">Quiz Creator AI (Pro)</h3>
                 <p className="text-[10px] text-blue-400 font-mono flex items-center gap-1">
                   <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span>
-                  Enhanced with Visual Vision
+                  Enhanced Reasoning & Logic
                 </p>
               </div>
             </div>
@@ -144,7 +160,7 @@ const QuizAI: React.FC = () => {
                 <div className={`max-w-[85%] p-4 rounded-2xl text-sm leading-relaxed ${
                   msg.role === 'user' 
                   ? 'bg-blue-600 text-white rounded-tr-none' 
-                  : 'bg-slate-800 text-slate-200 border border-white/5 rounded-tl-none shadow-md'
+                  : 'bg-slate-800 text-slate-200 border border-white/5 rounded-tl-none shadow-md whitespace-pre-wrap'
                 }`}>
                   {msg.image && <img src={msg.image} alt="User upload" className="rounded-lg mb-2 max-h-40 object-contain w-full bg-black/20" />}
                   {msg.text}
@@ -155,7 +171,7 @@ const QuizAI: React.FC = () => {
               <div className="flex justify-start">
                 <div className="bg-slate-800 p-3 rounded-2xl rounded-tl-none flex items-center gap-2 border border-white/5">
                   <Loader2 size={16} className="animate-spin text-blue-500" />
-                  <span className="text-xs text-slate-400">AI đang soạn bài...</span>
+                  <span className="text-xs text-slate-400">AI đang soạn bài (có thể mất 10-20s)...</span>
                 </div>
               </div>
             )}
@@ -185,7 +201,7 @@ const QuizAI: React.FC = () => {
                       handleSend();
                     }
                   }}
-                  placeholder="Yêu cầu tạo Quiz hoặc gửi ảnh..."
+                  placeholder="Ví dụ: Tạo 15 câu trắc nghiệm KHTN 8..."
                   rows={1}
                   className="w-full bg-slate-900/80 border border-slate-700 rounded-xl px-4 py-3 pr-10 text-sm text-white focus:outline-none focus:border-blue-500 transition-all resize-none max-h-32"
                 />
