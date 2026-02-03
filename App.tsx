@@ -4,6 +4,7 @@ import Stats from './components/Stats';
 import Achievements from './components/Achievements';
 import Timeline from './components/Timeline';
 import Skills from './components/Skills';
+import Flashcards from './components/Flashcards';
 import TodoList from './components/TodoList';
 import PomodoroTimer from './components/PomodoroTimer';
 import Footer from './components/Footer';
@@ -20,7 +21,7 @@ function App() {
           <div className="hidden md:flex gap-8 text-sm font-medium text-slate-400">
             <a href="#" className="hover:text-white transition-colors">About</a>
             <a href="#achievements" className="hover:text-white transition-colors">Achievements</a>
-            <a href="#education" className="hover:text-white transition-colors">Education</a>
+            <a href="#flashcards" className="hover:text-white transition-colors text-blue-400">Flashcards</a>
             <a href="#todo" className="hover:text-white transition-colors">To-Do</a>
             <a href="#pomodoro" className="hover:text-white transition-colors text-red-400">Pomodoro</a>
           </div>
@@ -36,6 +37,10 @@ function App() {
         <Achievements />
         <Timeline />
         <Skills />
+        
+        {/* New Learning Section */}
+        <Flashcards />
+        
         <div className="grid lg:grid-cols-2 gap-0 border-t border-white/5">
            <TodoList />
            <PomodoroTimer />
