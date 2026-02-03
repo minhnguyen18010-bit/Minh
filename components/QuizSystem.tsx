@@ -37,14 +37,6 @@ const QuizSystem: React.FC = () => {
 
   useEffect(() => {
     localStorage.setItem('portfolio-quiz-items', JSON.stringify(items));
-    // Listen for custom events from AI to add new quiz items
-    const handleAddQuiz = (e: any) => {
-      if (e.detail) {
-        setItems(prev => [...e.detail, ...prev]);
-      }
-    };
-    window.addEventListener('add-quiz-items', handleAddQuiz);
-    return () => window.removeEventListener('add-quiz-items', handleAddQuiz);
   }, [items]);
 
   const addItem = () => {
@@ -330,7 +322,7 @@ const QuizSystem: React.FC = () => {
             <div className="lg:col-span-2 space-y-4 max-h-[800px] overflow-y-auto pr-2 custom-scrollbar">
               {filteredItems.length === 0 ? (
                 <div className="text-center py-20 bg-white/[0.02] rounded-2xl border border-dashed border-slate-700">
-                  <p className="text-slate-500 italic">Danh sách trống. Dùng AI bên dưới để tạo Quiz nhanh!</p>
+                  <p className="text-slate-500 italic">Danh sách trống. Hãy thêm các câu hỏi trắc nghiệm hoặc flashcard ở bên trái!</p>
                 </div>
               ) : (
                 filteredItems.map((item) => (

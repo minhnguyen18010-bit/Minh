@@ -7,7 +7,6 @@ import Skills from './components/Skills';
 import QuizSystem from './components/QuizSystem';
 import TodoList from './components/TodoList';
 import PomodoroTimer from './components/PomodoroTimer';
-import QuizAI from './components/QuizAI';
 import Footer from './components/Footer';
 
 function App() {
@@ -47,9 +46,6 @@ function App() {
            <PomodoroTimer />
         </div>
       </main>
-
-      {/* Floating Advanced Quiz AI Assistant */}
-      <QuizAI />
 
       <Footer />
     </div>
