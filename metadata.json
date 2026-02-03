@@ -1,5 +1,7 @@
 {
-  "name": "Student Tech Portfolio",
-  "description": "A dark-themed, professional portfolio for a student with coding, robotics, and arts achievements.",
-  "requestFramePermissions": []
+  "name": "Student Tech Portfolio & AI Tutor",
+  "description": "A professional portfolio with a built-in AI Quiz generator and student tools.",
+  "requestFramePermissions": [
+    "camera"
+  ]
 }

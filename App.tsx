@@ -4,9 +4,10 @@ import Stats from './components/Stats';
 import Achievements from './components/Achievements';
 import Timeline from './components/Timeline';
 import Skills from './components/Skills';
-import Flashcards from './components/Flashcards';
+import QuizSystem from './components/QuizSystem';
 import TodoList from './components/TodoList';
 import PomodoroTimer from './components/PomodoroTimer';
+import QuizAI from './components/QuizAI';
 import Footer from './components/Footer';
 
 function App() {
@@ -21,7 +22,7 @@ function App() {
           <div className="hidden md:flex gap-8 text-sm font-medium text-slate-400">
             <a href="#" className="hover:text-white transition-colors">About</a>
             <a href="#achievements" className="hover:text-white transition-colors">Achievements</a>
-            <a href="#flashcards" className="hover:text-white transition-colors text-blue-400">Flashcards</a>
+            <a href="#flashcards" className="hover:text-white transition-colors text-blue-400">Quiz</a>
             <a href="#todo" className="hover:text-white transition-colors">To-Do</a>
             <a href="#pomodoro" className="hover:text-white transition-colors text-red-400">Pomodoro</a>
           </div>
@@ -38,14 +39,17 @@ function App() {
         <Timeline />
         <Skills />
         
-        {/* New Learning Section */}
-        <Flashcards />
+        {/* Advanced Quiz & Learning Section */}
+        <QuizSystem />
         
         <div className="grid lg:grid-cols-2 gap-0 border-t border-white/5">
            <TodoList />
            <PomodoroTimer />
         </div>
       </main>
+
+      {/* Floating Advanced Quiz AI Assistant */}
+      <QuizAI />
 
       <Footer />
     </div>
