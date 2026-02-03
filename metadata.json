@@ -1,7 +1,5 @@
 {
   "name": "Student Tech Portfolio & AI Tutor",
   "description": "A professional portfolio with a built-in AI Quiz generator and student tools.",
-  "requestFramePermissions": [
-    "camera"
-  ]
+  "requestFramePermissions": []
 }

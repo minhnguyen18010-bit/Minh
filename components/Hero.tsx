@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Download, ChevronRight, Code, Music, Trophy, User, Camera, ImagePlus } from 'lucide-react';
+import { Download, ChevronRight, Code, Music, Trophy, User, RefreshCw, ImagePlus } from 'lucide-react';
 
 const Hero: React.FC = () => {
   // State quản lý ảnh: Mặc định là null để kiểm tra local storage trước
@@ -126,7 +126,7 @@ const Hero: React.FC = () => {
                   className="px-4 py-2 bg-slate-900/80 backdrop-blur-md border border-white/20 hover:bg-blue-600 text-white rounded-full shadow-lg transition-all hover:scale-105 flex items-center gap-2 group/btn"
                   title="Tải ảnh lên (Lưu cố định)"
                 >
-                  {profileImage ? <Camera size={16} /> : <ImagePlus size={16} />}
+                  {profileImage ? <RefreshCw size={16} /> : <ImagePlus size={16} />}
                   <span className="text-sm font-medium">
                     {profileImage ? 'Đổi Ảnh' : 'Tải Ảnh Lên'}
                   </span>
